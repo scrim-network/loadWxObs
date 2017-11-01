@@ -55,6 +55,41 @@ load_time <- function(ds, vname_time = "time") {
   
 }
 
+#' Quickly load station metadata and observations from a netCDF observation file
+#' 
+#' @param ds fpath_ds File path to netCDF observation file
+#' @param vname Variable name for which to load observations
+#' @param start_end Character vector of size 2 with start and end dates, 
+#'   Default: loads observations for all times in the netCDF file
+#' @param stnids Station ids for which to load observations,
+#'   Default: loads observations for all stations in the netCDF file
+#' @return List of station metadata and observations. Station metdata is a
+#'   SpatialPointsDataFrame and observations are in a spacewise xts object.
+#' @export
+quick_load_stnobs <- function(fpath_ds, vname, start_end = NULL, stnids = NULL) {
+  
+  # Open netcdf observation file
+  ds <- h5::h5file(fpath_ds, mode='r')
+  
+  # Load station metadata as SpatialPointsDataFrame
+  stns <- load_stns(ds)
+
+  # Load dates for the observation time series
+  times <- load_time(ds)
+  
+  # Load observations for dates in chunk
+  # Observations are returned as an xts object
+  obs <- load_obs(ds, vname, stns, times, start_end, stnids)
+  
+  # Close netcdf observation file
+  h5::h5close(ds)
+  
+  if (!is.null(stnids)) stns <- stns[stnids,]
+  
+  return(list(stns=stns, obs=obs))
+  
+}
+
 #' Load station observation time series as a "spacewide" xts object
 #' 
 #' @param ds H5File object pointing to netCDF observation file
@@ -104,7 +139,7 @@ load_obs <- function(ds, vname, stns, times, start_end = NULL, stnids = NULL) {
   
   colnames(obs) <- stnids
   
-  if ("missing_value" %in% list.attributes(ds[vname])) {
+  if ("missing_value" %in% h5::list.attributes(ds[vname])) {
     obs[obs == h5::h5attr(ds[vname], "missing_value")] = NA
   }
   
