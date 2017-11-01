@@ -252,6 +252,7 @@ init_obsnc <- function(fpath, stns, times, vnames) {
 #' @param time_col 
 #' @param id_col 
 #' @return A xts object
+#' @export
 coerce_tidy_df_to_spacewide_xts <- function(df_tidy, value.var, time_col = "time", 
                                             id_col = "station_id") {
   
@@ -268,6 +269,7 @@ coerce_tidy_df_to_spacewide_xts <- function(df_tidy, value.var, time_col = "time
 #' @param spdf_locs 
 #' @param varname 
 #' @return A STFDF object
+#' @export
 coerce_spacewide_xts_to_STFDF <- function(xts_sw, spdf_locs, varname) {
   
   # Create spacetime STFDF object.  Data needs to be a single column data.frame
