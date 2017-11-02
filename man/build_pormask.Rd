@@ -4,19 +4,26 @@
 \alias{build_pormask}
 \title{Build a boolean mask for stations that have long enough period-of-record}
 \usage{
-build_pormask(ds, vname, start_date, end_date, nyrs)
+build_pormask(ds, vname, stns, times, nyrs, start_end = NULL, stnids = NULL)
 }
 \arguments{
 \item{ds}{H5File object pointing to netCDF observation file}
 
-\item{vname}{Variable name for which to build the mask}
+\item{vname}{Variable name for which to load observations}
 
-\item{start_date}{The start date for period-of-record time period}
+\item{stns}{SpatialPointsDataFrame of station metadata from \code{\link{load_stns}}}
 
-\item{end_date}{The end date for period-of-record time period}
+\item{times}{POSIXct vector of times for the netCDF observation file from
+\code{\link{load_time}}}
 
 \item{nyrs}{The minimum period of record in years. The function tests
 whether a station has at least nyrs years of data in each month.}
+
+\item{start_end}{Character vector of size 2 with start and end dates, 
+Default: uses observations for all times in the netCDF file}
+
+\item{stnids}{Station ids for which to load observations,
+Default: uses observations for all stations in the netCDF file}
 }
 \value{
 boolean mask for stations

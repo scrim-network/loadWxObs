@@ -57,7 +57,7 @@ load_time <- function(ds, vname_time = "time") {
 
 #' Quickly load station metadata and observations from a netCDF observation file
 #' 
-#' @param ds fpath_ds File path to netCDF observation file
+#' @param fpath_ds File path to netCDF observation file
 #' @param vname Variable name for which to load observations
 #' @param start_end Character vector of size 2 with start and end dates, 
 #'   Default: loads observations for all times in the netCDF file
@@ -152,33 +152,48 @@ load_obs <- function(ds, vname, stns, times, start_end = NULL, stnids = NULL) {
 #' Build a boolean mask for stations that have long enough period-of-record
 #' 
 #' @param ds H5File object pointing to netCDF observation file
-#' @param vname Variable name for which to build the mask
-#' @param start_date The start date for period-of-record time period 
-#' @param end_date The end date for period-of-record time period
+#' @param vname Variable name for which to load observations
+#' @param stns SpatialPointsDataFrame of station metadata from \code{\link{load_stns}}
+#' @param times POSIXct vector of times for the netCDF observation file from
+#'   \code{\link{load_time}}
 #' @param nyrs The minimum period of record in years. The function tests
 #'   whether a station has at least nyrs years of data in each month. 
+#' @param start_end Character vector of size 2 with start and end dates, 
+#'   Default: uses observations for all times in the netCDF file
+#' @param stnids Station ids for which to load observations,
+#'   Default: uses observations for all stations in the netCDF file
 #' @return boolean mask for stations
 #' @export
-build_pormask <- function(ds, vname, start_date, end_date, nyrs) {
+build_pormask <- function(ds, vname, stns, times, nyrs, start_end = NULL, stnids = NULL) {
   
-  vname <- paste0("obs_cnt_prcp_", format.Date(start_date, "%Y%m%d"), "_",
-                  format.Date(end_date, "%Y%m%d"))
+  obs <- load_obs(ds, vname, stns, times, start_end, stnids)
   
-  obs_cnts <- ds[vname][]
+  # Create mask of which observations are not NA
+  mask_notna <- !is.na(obs)
   
-  mths <- as.POSIXlt(seq(as.Date("2015-01-01"), 
-                         as.Date("2015-12-31"), by = "day"))$mon + 1
+  # Get mth for each observation
+  mth <- xts::.indexmon(obs)+1
   
+  # Aggregate sum of non-NA observations by month
+  obs_cnts <- aggregate.data.frame(mask_notna, by=list(mth=mth), sum)
+  # Remove first column which is the months used for grouping
+  obs_cnts <- obs_cnts[, -1]
+   
+  # Get number of days in each month for a non leap year
+  mths_yr <- as.POSIXlt(seq(as.Date("2015-01-01"), 
+                            as.Date("2015-12-31"), by = "day"))$mon + 1
   days_in_month <- sapply(1:12, FUN = function(x) {
-    sum(mths == x)
+    sum(mths_yr == x)
   })
   
+  # Multiply by number years to get the min number of observations that are needed
+  # for n years of data in each month
   nmin <- days_in_month * nyrs
   
+  # Create final por mask
   mask_por <- t(sapply(1:12, function(x) {
     obs_cnts[x, ] > nmin[x]
   }))
-  
   mask_por <- colSums(mask_por) == 12
   
   return(mask_por)
@@ -313,7 +328,7 @@ coerce_spacewide_xts_to_STFDF <- function(xts_sw, spdf_locs, varname) {
   
   adf <- data.frame(as.vector(t(xts_sw)))
   colnames(adf) <- varname
-  a_stfdf <- spacetime::STFDF(spdf_locs, index(xts_sw), data = adf)
+  a_stfdf <- spacetime::STFDF(spdf_locs, zoo::index(xts_sw), data = adf)
   
   return(a_stfdf)
 }
