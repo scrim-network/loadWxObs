@@ -143,6 +143,10 @@ load_obs <- function(ds, vname, stns, times, start_end = NULL, stnids = NULL) {
     obs[obs == h5::h5attr(ds[vname], "missing_value")] = NA
   }
   
+  if ("_FillValue" %in% h5::list.attributes(ds[vname])) {
+    obs[obs == h5::h5attr(ds[vname], "_FillValue")] = NA
+  }
+  
   obs <- xts::xts(obs, times)
   
   return(obs)
