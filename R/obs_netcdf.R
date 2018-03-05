@@ -287,7 +287,7 @@ init_obsnc <- function(fpath, stns, times, vnames) {
     a_var <- vars_meta[[i]]
     a_vals_meta <- vals_meta[[i]]
     
-    ncvar_put(ds, a_var, a_vals_meta)
+    ncdf4::ncvar_put(ds, a_var, a_vals_meta)
     
   }
   
@@ -295,7 +295,7 @@ init_obsnc <- function(fpath, stns, times, vnames) {
   nc_close(ds)
   
   # Return h5file object pointing to the new netcdf file
-  return(h5file(fpath))
+  return(h5::h5file(fpath))
   
 }
 
