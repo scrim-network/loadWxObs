@@ -6,13 +6,6 @@
 \usage{
 coerce_spacewide_xts_to_STFDF(xts_sw, spdf_locs, varname)
 }
-\arguments{
-\item{xts_sw}{}
-
-\item{spdf_locs}{}
-
-\item{varname}{}
-}
 \value{
 A STFDF object
 }

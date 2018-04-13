@@ -16,7 +16,7 @@ load_obs(ds, vname, stns, times, start_end = NULL, stnids = NULL)
 \item{times}{POSIXct vector of times for the netCDF observation file from
 \code{\link{load_time}}}
 
-\item{start_end}{Character vector of size 2 with start and end dates, 
+\item{start_end}{Character vector of size 2 with start and end dates,
 Default: loads observations for all times in the netCDF file}
 
 \item{stnids}{Station ids for which to load observations,

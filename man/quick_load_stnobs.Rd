@@ -9,9 +9,9 @@ quick_load_stnobs(fpath_ds, vname, start_end = NULL, stnids = NULL)
 \arguments{
 \item{fpath_ds}{File path to netCDF observation file}
 
-\item{vname}{Variable name for which to load observations}
+\item{vname}{Variable name(s) for which to load observations}
 
-\item{start_end}{Character vector of size 2 with start and end dates, 
+\item{start_end}{Character vector of size 2 with start and end dates,
 Default: loads observations for all times in the netCDF file}
 
 \item{stnids}{Station ids for which to load observations,

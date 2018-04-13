@@ -58,7 +58,7 @@ load_time <- function(ds, vname_time = "time") {
 #' Quickly load station metadata and observations from a netCDF observation file
 #'
 #' @param fpath_ds File path to netCDF observation file
-#' @param vname Variable name for which to load observations
+#' @param vname Variable name(s) for which to load observations
 #' @param start_end Character vector of size 2 with start and end dates,
 #'   Default: loads observations for all times in the netCDF file
 #' @param stnids Station ids for which to load observations,
@@ -79,14 +79,19 @@ quick_load_stnobs <- function(fpath_ds, vname, start_end = NULL, stnids = NULL) 
 
   # Load observations for dates in chunk
   # Observations are returned as an xts object
-  obs <- load_obs(ds, vname, stns, times, start_end, stnids)
+  obs <- list()
+  for (a_vname in vname) {
+    obs[[a_vname]] <- load_obs(ds, a_vname, stns, times, start_end, stnids)
+  }
 
   # Close netcdf observation file
   h5::h5close(ds)
 
   if (!is.null(stnids)) stns <- stns[stnids,]
 
-  return(list(stns=stns, obs=obs))
+  obs[['stns']] <- stns
+
+  return(obs)
 
 }
 
@@ -196,7 +201,7 @@ build_pormask <- function(ds, vname, stns, times, nyrs, start_end = NULL, stnids
 
   # Create final por mask
   mask_por <- t(sapply(1:12, function(x) {
-    obs_cnts[x, ] > nmin[x]
+    obs_cnts[x, ] >= nmin[x]
   }))
   mask_por <- colSums(mask_por) == 12
 
@@ -291,8 +296,8 @@ init_obsnc <- function(fpath, stns, times, vnames) {
 
   }
 
-  nc_sync(ds)
-  nc_close(ds)
+  ncdf4::nc_sync(ds)
+  ncdf4::nc_close(ds)
 
   # Return h5file object pointing to the new netcdf file
   return(h5::h5file(fpath))

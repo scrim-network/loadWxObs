@@ -7,15 +7,6 @@
 coerce_tidy_df_to_spacewide_xts(df_tidy, value.var, time_col = "time",
   id_col = "station_id")
 }
-\arguments{
-\item{df_tidy}{}
-
-\item{value.var}{}
-
-\item{time_col}{}
-
-\item{id_col}{}
-}
 \value{
 A xts object
 }

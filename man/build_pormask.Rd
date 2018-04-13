@@ -19,7 +19,7 @@ build_pormask(ds, vname, stns, times, nyrs, start_end = NULL, stnids = NULL)
 \item{nyrs}{The minimum period of record in years. The function tests
 whether a station has at least nyrs years of data in each month.}
 
-\item{start_end}{Character vector of size 2 with start and end dates, 
+\item{start_end}{Character vector of size 2 with start and end dates,
 Default: uses observations for all times in the netCDF file}
 
 \item{stnids}{Station ids for which to load observations,
