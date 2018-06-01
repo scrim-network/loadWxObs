@@ -337,7 +337,13 @@ coerce_spacewide_xts_to_STFDF <- function(xts_sw, spdf_locs, varname) {
 
   adf <- data.frame(as.vector(t(xts_sw)))
   colnames(adf) <- varname
-  a_stfdf <- spacetime::STFDF(spdf_locs, zoo::index(xts_sw), data = adf)
+  times <- zoo::index(xts_sw)
+
+  if (length(times) < 1) {
+    a_stfdf <- spacetime::STFDF(spdf_locs, times, data = adf)
+  } else {
+    a_stfdf <- spacetime::STFDF(spdf_locs, times, data = adf,  endTime = times)
+  }
 
   return(a_stfdf)
 }
