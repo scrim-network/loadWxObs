@@ -1,7 +1,7 @@
 Package: obsdbr
 Title: Loads and writes station observations from/to local binary files or databases
 Version: 0.0.0.9000
-Authors@R: person("Jared", "Oyler", email = "jared.oyler@psu.edu", role = c("aut", "cre"))
+Authors@R: person("Jared", "Oyler", email = "jaredwo@gmail.com", role = c("aut", "cre"))
 Description: A set of utility functions for loading and writing weather station
     observations. Currently supports loading and writing from/to local netCDF
     observation files.
@@ -10,11 +10,11 @@ License: GNU General Public License v3.0
 Encoding: UTF-8
 LazyData: true
 Imports:
-    h5,
+    hdf5r,
     ncdf4,
     reshape2,
     RNetCDF,
     sp,
     spacetime,
     stringr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

@@ -18,11 +18,11 @@ load_stns <- function(ds,
 
   for (vname in vnames) {
 
-    vals <- ds[vname][]
+    vals <- ds[[vname]]$read()
 
     # Create vector of strings if 2D character
     if (is.character(vals) & length(dim(vals)) == 2) {
-      vals <- apply(vals, 1, paste0, collapse = "")
+      vals <- apply(vals, 2, paste0, collapse = "")
     }
 
     stns[[vname]] <- vals
@@ -49,8 +49,8 @@ load_stns <- function(ds,
 #' @export
 load_time <- function(ds, vname_time = "time") {
 
-  times <- ds[vname_time][]
-  times <- RNetCDF::utcal.nc(h5::h5attr(ds[vname_time], "units"), times, type = "c")
+  times <- ds[[vname_time]][]
+  times <- RNetCDF::utcal.nc(hdf5r::h5attr(ds[[vname_time]], "units"), times, type = "c")
   return(times)
 
 }
@@ -69,7 +69,7 @@ load_time <- function(ds, vname_time = "time") {
 quick_load_stnobs <- function(fpath_ds, vname, start_end = NULL, stnids = NULL) {
 
   # Open netcdf observation file
-  ds <- h5::h5file(fpath_ds, mode='r')
+  ds <- hdf5r::H5File$new(fpath_ds, mode='r')
 
   # Load station metadata as SpatialPointsDataFrame
   stns <- load_stns(ds)
@@ -85,7 +85,7 @@ quick_load_stnobs <- function(fpath_ds, vname, start_end = NULL, stnids = NULL) 
   }
 
   # Close netcdf observation file
-  h5::h5close(ds)
+  ds$close_all()
 
   if (!is.null(stnids)) stns <- stns[stnids,]
 
@@ -113,7 +113,7 @@ load_obs <- function(ds, vname, stns, times, start_end = NULL, stnids = NULL) {
   if (is.null(start_end) & is.null(stnids)) {
 
     stnids <- stns$station_id
-    obs <- ds[vname][]
+    obs <- ds[[vname]]$read()
 
   } else if (is.null(start_end) & (!is.null(stnids))) {
 
@@ -122,14 +122,14 @@ load_obs <- function(ds, vname, stns, times, start_end = NULL, stnids = NULL) {
     if (is.unsorted(i, strictly = TRUE))
       stop("Station ids must be in obs_index order")
 
-    obs <- ds[vname][, i]
+    obs <- ds[[vname]][i,]
 
   } else if ((!is.null(start_end)) & is.null(stnids)) {
 
     stnids <- stns$station_id
     i <- which(times >= start_end[1] & times <= start_end[2])
     times <- times[i]
-    obs <- ds[vname][i, ]
+    obs <- ds[[vname]][,i]
 
   } else {
     i_stns <- stns@data[stnids, "obs_index"]
@@ -139,17 +139,22 @@ load_obs <- function(ds, vname, stns, times, start_end = NULL, stnids = NULL) {
 
     i_time <- which(times >= start_end[1] & times <= start_end[2])
     times <- times[i_time]
-    obs <- ds[vname][i_time, i_stns]
+    obs <- ds[[vname]][i_stns, i_time]
   }
 
+  if (is.null(dim(obs))) {
+    dim(obs) <- c(1, length(obs))
+  }
+
+  obs <- t(obs)
   colnames(obs) <- stnids
 
-  if ("missing_value" %in% h5::list.attributes(ds[vname])) {
-    obs[obs == h5::h5attr(ds[vname], "missing_value")] = NA
+  if (ds[[vname]]$attr_exists("missing_value")) {
+    obs[obs == hdf5r::h5attr(ds[[vname]], "missing_value")] = NA
   }
 
-  if ("_FillValue" %in% h5::list.attributes(ds[vname])) {
-    obs[obs == h5::h5attr(ds[vname], "_FillValue")] = NA
+  if (ds[[vname]]$attr_exists("_FillValue")) {
+    obs[obs == hdf5r::h5attr(ds[[vname]], "_FillValue")] = NA
   }
 
   obs <- xts::xts(obs, times)
@@ -300,7 +305,7 @@ init_obsnc <- function(fpath, stns, times, vnames) {
   ncdf4::nc_close(ds)
 
   # Return h5file object pointing to the new netcdf file
-  return(h5::h5file(fpath))
+  return(hdf5r::H5File$new(fpath))
 
 }
 

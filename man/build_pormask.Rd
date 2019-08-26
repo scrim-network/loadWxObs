@@ -4,7 +4,8 @@
 \alias{build_pormask}
 \title{Build a boolean mask for stations that have long enough period-of-record}
 \usage{
-build_pormask(ds, vname, stns, times, nyrs, start_end = NULL, stnids = NULL)
+build_pormask(ds, vname, stns, times, nyrs, start_end = NULL,
+  stnids = NULL)
 }
 \arguments{
 \item{ds}{H5File object pointing to netCDF observation file}
