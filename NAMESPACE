@@ -11,7 +11,6 @@ export(quick_load_stnobs)
 
 # Import undefined global functions or variables: #!+
 importFrom("stats", "aggregate.data.frame", "as.formula")
-importFrom("sp", "coordinates", "CRS", "proj4string")
 importFrom("RNetCDF", "utinvcal.nc", "utcal.nc")
 importFrom("hdf5r", "h5attr", "H5File")
 importFrom("xts", "xts", ".indexmon", "as.xts")
@@ -19,3 +18,4 @@ importFrom("ncdf4", "nc_close", "nc_sync", "ncvar_put", "ncdim_def", "ncvar_def"
 importFrom("reshape2", "dcast")
 importFrom("zoo", "index")
 importFrom("spacetime", "STFDF")
+import(sp)
