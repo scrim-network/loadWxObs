@@ -34,8 +34,8 @@ load_stns <- function(ds,
   # Turn station dataframe into spatial dataframe
   stns <- as.data.frame(stns, stringsAsFactors = FALSE)
   row.names(stns) <- stns[, vname_stnid]
-  sp::coordinates(stns) <- as.formula(paste0("~", vnames_xy[1], "+", vnames_xy[2]))
-  sp::proj4string(stns) = sp::CRS("+proj=longlat +datum=WGS84")
+  coordinates(stns) <- as.formula(paste0("~", vnames_xy[1], "+", vnames_xy[2]))
+  proj4string(stns) = CRS("+proj=longlat +datum=WGS84")
 
   return(stns)
 
@@ -50,7 +50,7 @@ load_stns <- function(ds,
 load_time <- function(ds, vname_time = "time") {
 
   times <- ds[[vname_time]][]
-  times <- RNetCDF::utcal.nc(hdf5r::h5attr(ds[[vname_time]], "units"), times, type = "c")
+  times <- utcal.nc(h5attr(ds[[vname_time]], "units"), times, type = "c")
   return(times)
 
 }
@@ -69,7 +69,7 @@ load_time <- function(ds, vname_time = "time") {
 quick_load_stnobs <- function(fpath_ds, vname, start_end = NULL, stnids = NULL) {
 
   # Open netcdf observation file
-  ds <- hdf5r::H5File$new(fpath_ds, mode='r')
+  ds <- H5File$new(fpath_ds, mode='r')
 
   # Load station metadata as SpatialPointsDataFrame
   stns <- load_stns(ds)
@@ -150,14 +150,14 @@ load_obs <- function(ds, vname, stns, times, start_end = NULL, stnids = NULL) {
   colnames(obs) <- stnids
 
   if (ds[[vname]]$attr_exists("missing_value")) {
-    obs[obs == hdf5r::h5attr(ds[[vname]], "missing_value")] = NA
+    obs[obs == h5attr(ds[[vname]], "missing_value")] = NA
   }
 
   if (ds[[vname]]$attr_exists("_FillValue")) {
-    obs[obs == hdf5r::h5attr(ds[[vname]], "_FillValue")] = NA
+    obs[obs == h5attr(ds[[vname]], "_FillValue")] = NA
   }
 
-  obs <- xts::xts(obs, times)
+  obs <- xts(obs, times)
 
   return(obs)
 
@@ -186,7 +186,7 @@ build_pormask <- function(ds, vname, stns, times, nyrs, start_end = NULL, stnids
   mask_notna <- !is.na(obs)
 
   # Get mth for each observation
-  mth <- xts::.indexmon(obs)+1
+  mth <- .indexmon(obs)+1
 
   # Aggregate sum of non-NA observations by month
   obs_cnts <- aggregate.data.frame(mask_notna, by=list(mth=mth), sum)
@@ -225,13 +225,13 @@ build_pormask <- function(ds, vname, stns, times, nyrs, start_end = NULL, stnids
 init_obsnc <- function(fpath, stns, times, vnames) {
 
   # Create station_id dimension
-  dim_stnid <- ncdf4::ncdim_def("station_id", "", seq(length(stns$station_id)),
+  dim_stnid <- ncdim_def("station_id", "", seq(length(stns$station_id)),
                                 create_dimvar = FALSE)
 
   # Create time dimension
   times <- as.POSIXct(times)
   tunits <- sprintf("days since %s", strftime(min(times), "%Y-%m-%d"))
-  dim_time <- ncdf4::ncdim_def("time", tunits, RNetCDF::utinvcal.nc(tunits, times))
+  dim_time <- ncdim_def("time", tunits, utinvcal.nc(tunits, times))
 
   # Create station metadata variables
   vars_meta <- list()
@@ -249,14 +249,14 @@ init_obsnc <- function(fpath, stns, times, vnames) {
       char_len <- max(nchar(a_vals_meta))
 
       # Create string dimension with size char_len
-      dim_string <- ncdf4::ncdim_def(paste0("string_", vname), "", seq(char_len),
+      dim_string <- ncdim_def(paste0("string_", vname), "", seq(char_len),
                                      create_dimvar = FALSE)
       # Create 2-d variable
-      a_var <- ncdf4::ncvar_def(vname, "", list(dim_string, dim_stnid), prec = "char")
+      a_var <- ncvar_def(vname, "", list(dim_string, dim_stnid), prec = "char")
 
     } else {
 
-      a_var <- ncdf4::ncvar_def(vname, "", list(dim_stnid), prec = "double")
+      a_var <- ncvar_def(vname, "", list(dim_stnid), prec = "double")
 
     }
 
@@ -267,10 +267,10 @@ init_obsnc <- function(fpath, stns, times, vnames) {
   }
 
   # Add coordinate variables to the metadata
-  for (vname in colnames(sp::coordinates(stns))) {
+  for (vname in colnames(coordinates(stns))) {
 
-    a_vals <- as.numeric(sp::coordinates(stns)[, vname])
-    a_var <- ncdf4::ncvar_def(vname, "", list(dim_stnid), prec = "double")
+    a_vals <- as.numeric(coordinates(stns)[, vname])
+    a_var <- ncvar_def(vname, "", list(dim_stnid), prec = "double")
 
     vars_meta[[i]] <- a_var
     vals_meta[[i]] <- a_vals
@@ -283,29 +283,29 @@ init_obsnc <- function(fpath, stns, times, vnames) {
   i = 1
 
   for (vname in vnames) {
-    a_var <- ncdf4::ncvar_def(vname, "", list(dim_stnid, dim_time), prec = "double",
+    a_var <- ncvar_def(vname, "", list(dim_stnid, dim_time), prec = "double",
                               compression = 4, chunksizes = c(1, length(times)), missval = NA)
     vars_main[[i]] <- a_var
     i = i + 1
   }
 
   # Create netcdf file and add station metadata
-  ds <- ncdf4::nc_create(fpath, append(vars_meta, vars_main), force_v4 = T)
+  ds <- nc_create(fpath, append(vars_meta, vars_main), force_v4 = T)
 
   for (i in seq(length(vals_meta))) {
 
     a_var <- vars_meta[[i]]
     a_vals_meta <- vals_meta[[i]]
 
-    ncdf4::ncvar_put(ds, a_var, a_vals_meta)
+    ncvar_put(ds, a_var, a_vals_meta)
 
   }
 
-  ncdf4::nc_sync(ds)
-  ncdf4::nc_close(ds)
+  nc_sync(ds)
+  nc_close(ds)
 
   # Return h5file object pointing to the new netcdf file
-  return(hdf5r::H5File$new(fpath))
+  return(H5File$new(fpath))
 
 }
 
@@ -320,9 +320,9 @@ init_obsnc <- function(fpath, stns, times, vnames) {
 coerce_tidy_df_to_spacewide_xts <- function(df_tidy, value.var, time_col = "time",
                                             id_col = "station_id") {
 
-  xts_sw <- reshape2::dcast(df_tidy, as.formula(paste0(time_col, "~", id_col)), value.var = value.var)
+  xts_sw <- dcast(df_tidy, as.formula(paste0(time_col, "~", id_col)), value.var = value.var)
   row.names(xts_sw) <- xts_sw[[time_col]]
-  xts_sw <- xts::as.xts(xts_sw[, colnames(xts_sw) != time_col])
+  xts_sw <- as.xts(xts_sw[, colnames(xts_sw) != time_col])
   return(xts_sw)
 
 }
@@ -342,12 +342,12 @@ coerce_spacewide_xts_to_STFDF <- function(xts_sw, spdf_locs, varname) {
 
   adf <- data.frame(as.vector(t(xts_sw)))
   colnames(adf) <- varname
-  times <- zoo::index(xts_sw)
+  times <- index(xts_sw)
 
   if (length(times) < 1) {
-    a_stfdf <- spacetime::STFDF(spdf_locs, times, data = adf)
+    a_stfdf <- STFDF(spdf_locs, times, data = adf)
   } else {
-    a_stfdf <- spacetime::STFDF(spdf_locs, times, data = adf,  endTime = times)
+    a_stfdf <- STFDF(spdf_locs, times, data = adf,  endTime = times)
   }
 
   return(a_stfdf)
