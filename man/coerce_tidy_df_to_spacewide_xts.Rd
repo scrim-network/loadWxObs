@@ -7,6 +7,15 @@
 coerce_tidy_df_to_spacewide_xts(df_tidy, value.var, time_col = "time",
   id_col = "station_id")
 }
+\arguments{
+\item{df_tidy}{A tidy/longform dataframe.}
+
+\item{value.var}{Name of column which stores values.}
+
+\item{time_col}{Name of column which stores time. Default "time"}
+
+\item{id_col}{Name of column which stores station id. Default: "station_id"}
+}
 \value{
 A xts object
 }

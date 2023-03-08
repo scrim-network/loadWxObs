@@ -311,10 +311,10 @@ init_obsnc <- function(fpath, stns, times, vnames) {
 
 #' Convert a tidy/longform dataframe into a spacewide xts object
 #'
-#' @param df_tidy
-#' @param value.var
-#' @param time_col
-#' @param id_col
+#' @param df_tidy A tidy/longform dataframe.
+#' @param value.var Name of column which stores values.
+#' @param time_col Name of column which stores time. Default "time"
+#' @param id_col Name of column which stores station id. Default: "station_id"
 #' @return A xts object
 #' @export
 coerce_tidy_df_to_spacewide_xts <- function(df_tidy, value.var, time_col = "time",
@@ -329,9 +329,9 @@ coerce_tidy_df_to_spacewide_xts <- function(df_tidy, value.var, time_col = "time
 
 #' Convert a spacewide xts object to a spacetime STFDF object
 #'
-#' @param xts_sw
-#' @param spdf_locs
-#' @param varname
+#' @param xts_sw A spacewide xts object.
+#' @param spdf_locs Stations as a SpatialPointsDataFrame.
+#' @param varname Variables names of station metadata to load.
 #' @return A STFDF object
 #' @export
 coerce_spacewide_xts_to_STFDF <- function(xts_sw, spdf_locs, varname) {

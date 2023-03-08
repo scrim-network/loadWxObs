@@ -6,6 +6,13 @@
 \usage{
 coerce_spacewide_xts_to_STFDF(xts_sw, spdf_locs, varname)
 }
+\arguments{
+\item{xts_sw}{A spacewide xts object.}
+
+\item{spdf_locs}{Stations as a SpatialPointsDataFrame.}
+
+\item{varname}{Variables names of station metadata to load.}
+}
 \value{
 A STFDF object
 }
