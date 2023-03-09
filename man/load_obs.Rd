@@ -28,3 +28,44 @@ A spacewide xts object of observations
 \description{
 Load station observation time series as a "spacewide" xts object
 }
+\seealso{
+  \code{\link{load_time}}, \code{\link{load_stns}}}
+}
+\examples{
+\dontrun{
+# Set timezone for environment to UTC
+Sys.setenv(TZ="UTC")
+
+# Set file path for ChesWx netCDF observation file
+PATH_CHESWX = "/Users/jaredwo/Downloads/data/cheswx"
+path_obsnc <- file.path(PATH_CHESWX, "station_data/prcp_homog_19480101_20171231.nc")
+
+# Open observation netCDF file
+ds <- H5File$new(path_obsnc, mode='r')
+
+# Load station metadata as a SpatialPointsDataFrame
+stns <- load_stns(ds)
+
+# Plot the station points
+plot(stns)
+
+# Load time variable data and create vector of POSIXct times
+# This is needed when loading actual observations
+times <- load_time(ds)
+
+# Load precipitation time series for Richmond airport (station id: GHCND_USW00013740)
+# Observations are returned as an xts object
+ts_prcp <- load_obs(ds, 'prcp', stns, times, stnids=c('GHCND_USW00013740'))
+
+# Plot Richmond time series
+plot.xts(ts_prcp)
+
+# Load precipitation observations from all stations for May 1980
+# Observations are returned as an xts object with a column for each station
+# This is considered a "spacewide" data structure
+prcp <- load_obs(ds, 'prcp', stns, times, start_end=c('1980-05-01','1980-05-31'))
+
+# Close netcdf file
+ds$close_all()
+}
+}

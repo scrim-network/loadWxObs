@@ -24,3 +24,21 @@ List of station metadata and observations. Station metdata is a
 \description{
 Quickly load station metadata and observations from a netCDF observation file
 }
+\seealso{
+  \code{\link{load_obs}}}
+}
+\examples{
+\dontrun{
+# Set timezone for environment to UTC
+Sys.setenv(TZ="UTC")
+
+# Set file path for ChesWx netCDF observation file
+PATH_CHESWX = "/Users/jaredwo/Downloads/data/cheswx"
+path_obsnc <- file.path(PATH_CHESWX, "station_data/prcp_homog_19480101_20171231.nc")
+
+# Load station metadata and observations in a single call
+stnobs <- quick_load_stnobs(path_obsnc, 'prcp', c('1980-05-01','1980-05-31'))
+stns <- stnobs[['stns']]
+obs <- stnobs[['prcp']]
+}
+}
