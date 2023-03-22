@@ -46,4 +46,4 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     Rscript -e 'install.packages( "https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.6-14.tar.gz", repos=NULL, type="source" )'
 
     # install most recent version of some R packages
-    Rscript -e 'install.packages(c("devtools", "caret", "doParallel", "foreach", "geosphere", "gstat", "hdf5r", "MASS", "methods", "mgcv", "ncdf4", "pROC", "quantregForest", "raster", "rgdal", "Rmpi", "RNetCDF", "sp", "verification", "xts", "zoo", "reshape2", "spacetime", "stringr"), repos="http://cran.us.r-project.org" )'
+    Rscript -e 'install.packages(c("devtools", "caret", "doParallel", "foreach", "geosphere", "gstat", "hdf5r", "MASS", "methods", "mgcv", "ncdf4", "pROC", "quantregForest", "raster", "rgdal", "Rmpi", "RNetCDF", "sp", "verification", "xts", "zoo", "reshape2", "spacetime"), repos="http://cran.us.r-project.org" )'

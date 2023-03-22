@@ -11,7 +11,6 @@ The **loadWxObs** R package contains a set of utility functions for loading and 
 * [RNetCDF](https://cran.r-project.org/web/packages/RNetCDF/index.html)
 * [sp](https://cran.r-project.org/web/packages/sp/index.html)
 * [spacetime](https://cran.r-project.org/web/packages/spacetime/index.html)
-* [stringr](https://cran.r-project.org/web/packages/stringr/index.html)
 
 ## Getting Started
 ### Installation

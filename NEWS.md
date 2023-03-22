@@ -1,3 +1,7 @@
+# loadWxObs v---
+==============
+* stringr removed from the list of R dependencies. No commands from stringr are used in the code.
+
 # loadWxObs v0.0.1 (Release date: 2023-03-22)
 ==============
 Changes:
