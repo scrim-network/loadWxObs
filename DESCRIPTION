@@ -1,7 +1,7 @@
-Package: obsdbr
+Package: loadWxObs
 Type: Package
 Title: Load and Write Weather Station Observations
-Version: 0.0.0.9
+Version: 0.0.1
 Author: Jared Oyler
 Maintainer: Kelsey Ruckert <klr324@psu.edu>
 Description: A set of utility functions for loading and writing weather station observations. Currently supports loading and writing from/to local netCDF observation files.

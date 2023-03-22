@@ -1,4 +1,13 @@
-# obsdbr v0.0.9 (Release date: 2023-03-22)
+# loadWxObs v0.0.1 (Release date: 2023-03-22)
+==============
+Changes:
+
+* obsdbr renamed to loadWxObs, which stands for load weather station observations
+	* reasons:
+		1. obsdbr is hard to remember
+		2. obsdbr is not very meaningful
+
+# obsdbr v0.0.0.9 (Release date: 2023-03-22)
 ==============
 
 Changes:
