@@ -2,14 +2,14 @@
 * system: Ubuntu, BootStrap: debootstrap, OSVersion: focal
 
 # RCMD check results
-* using log directory ‘/home/staff/klr324/obsdbr.Rcheck’
+* using log directory ‘/home/staff/klr324/loadWxObs.Rcheck’
 * using R version 3.6.3 (2020-02-29)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * using session charset: UTF-8
 * using option ‘--as-cran’
-* checking for file ‘obsdbr/DESCRIPTION’ ... OK
+* checking for file ‘loadWxObs/DESCRIPTION’ ... OK
 * checking extension type ... Package
-* this is package ‘obsdbr’ version ‘0.0.0.9’
+* this is package ‘loadWxObs’ version ‘0.0.1’
 * package encoding: UTF-8
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: ‘Kelsey Ruckert <klr324@psu.edu>’
@@ -25,7 +25,7 @@ New submission
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
 * checking serialization versions ... OK
-* checking whether package ‘obsdbr’ can be installed ... OK
+* checking whether package ‘loadWxObs’ can be installed ... OK
 * checking installed package size ... OK
 * checking package directory ... OK
 * checking for future file timestamps ... NOTE
@@ -63,8 +63,8 @@ unable to verify current time
 * checking for detritus in the temp directory ... OK
 * DONE
 
-Status: 2 NOTEs.
+Status: 2 NOTEs
 
 See
-  ‘/home/staff/klr324/obsdbr.Rcheck/00check.log’
+  ‘/home/staff/klr324/loadWxObs.Rcheck/00check.log’
 for details.
