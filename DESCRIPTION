@@ -1,6 +1,6 @@
 Package: obsdbr
 Type: Package
-Title: Download and Write Weather Station Observations
+Title: Load and Write Weather Station Observations
 Version: 0.0.0.9
 Author: Jared Oyler
 Maintainer: Kelsey Ruckert <klr324@psu.edu>

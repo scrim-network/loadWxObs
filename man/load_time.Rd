@@ -18,7 +18,7 @@ POSIXct vector of times
 Load time data as a vector of POSIXct times
 }
 \seealso{
-  \code{\link{load_obs}}, \code{\link{load_stns}}}
+  \code{\link{load_obs}}, \code{\link{load_stns}}
 }
 \examples{
 \dontrun{

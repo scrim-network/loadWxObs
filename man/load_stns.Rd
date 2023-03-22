@@ -27,7 +27,7 @@ A SpatialPointsDataFrame
 Load station metadata as a SpatialPointsDataFrame
 }
 \seealso{
-  \code{\link{load_obs}}, \code{\link{load_time}}}
+  \code{\link{load_obs}}, \code{\link{load_time}}
 }
 \examples{
 \dontrun{

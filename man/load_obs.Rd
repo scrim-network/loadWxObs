@@ -29,7 +29,7 @@ A spacewide xts object of observations
 Load station observation time series as a "spacewide" xts object
 }
 \seealso{
-  \code{\link{load_time}}, \code{\link{load_stns}}}
+  \code{\link{load_time}}, \code{\link{load_stns}}
 }
 \examples{
 \dontrun{

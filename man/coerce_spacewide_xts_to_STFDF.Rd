@@ -20,7 +20,7 @@ A STFDF object
 Convert a spacewide xts object to a spacetime STFDF object
 }
 \seealso{
-  \code{\link{load_time}}, \code{\link{load_stns}}, \code{\link{load_obs}}}
+  \code{\link{load_time}}, \code{\link{load_stns}}, \code{\link{load_obs}}
 }
 \examples{
 \dontrun{

@@ -25,7 +25,7 @@ List of station metadata and observations. Station metdata is a
 Quickly load station metadata and observations from a netCDF observation file
 }
 \seealso{
-  \code{\link{load_obs}}}
+  \code{\link{load_obs}}
 }
 \examples{
 \dontrun{

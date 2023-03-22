@@ -22,7 +22,7 @@ A H5File object pointing to new netCDF observation file
 Initialize a new netCDF observation file
 }
 \seealso{
-  \code{\link{quick_load_stnobs}}}
+  \code{\link{quick_load_stnobs}}
 }
 \examples{
 \dontrun{
