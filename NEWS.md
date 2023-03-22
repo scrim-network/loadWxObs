@@ -7,6 +7,11 @@ Changes:
 		1. obsdbr is hard to remember
 		2. obsdbr is not very meaningful
 
+* Housekeeping changes: 
+	* added version 0.0.1 listing to NEWS
+	* updated cran-comments file for new version
+	* added license, installation, author, and maintainer info to README
+
 # obsdbr v0.0.0.9 (Release date: 2023-03-22)
 ==============
 

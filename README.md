@@ -1,8 +1,9 @@
 # loadWxObs
 
-The loadWxObs R package contains a set of utility functions for loading and writing weather station observations. Currently supports loading and writing from/to local netCDF observation files.
+The **loadWxObs** R package contains a set of utility functions for loading and writing weather station observations. Currently supports loading and writing from/to local netCDF observation files.
 
-loadWxObs has the following R package dependencies:
+## Development notes
+**loadWxObs**  depends on R(≥3.3.2) and has the following R package dependencies:
 
 * [hdf5r](https://cran.r-project.org/web/packages/hdf5r/index.html)
 * [ncdf4](https://cran.r-project.org/web/packages/ncdf4/index.html)
@@ -12,6 +13,18 @@ loadWxObs has the following R package dependencies:
 * [spacetime](https://cran.r-project.org/web/packages/spacetime/index.html)
 * [stringr](https://cran.r-project.org/web/packages/stringr/index.html)
 
+## Getting Started
+### Installation
+
+**loadWxObs** is not currently available from CRAN. To install the latest development version directly from Github, run **devtools**:
+
+```R
+install.packages("devtools") ##if not already installed
+library(devtools)
+devtools::install_github("scrim-network/loadWxObs")
+library(loadWxObs)
+```
+### Examples
 Example of loading daily precipitation observations from a ChesWx netCDF station observation file.
 
 ```r
@@ -75,6 +88,14 @@ stns <- stnobs[['stns']]
 obs <- stnobs[['prcp']]
 
 ```
+## Authors
+
+Jared Oyler, Kelsey Ruckert, Robert Nicholas, and Matthew Lisk
+
+## Maintainer and Contact
+
+Kelsey Ruckert: <klr324@psu.edu>
+
 ## Checking the package
 ### Singularity
 To facilitate building and checking the package, the environment rwas built as a "writable" Singularity container. The built container is stored on Firkin (where it was built). Only the Singularity definition file is provided (`cwx.def`). This definition file can be used to reproduce the container on another system. 
@@ -116,4 +137,17 @@ git clone https://github.com/scrim-network/loadWxObs.git
 ```
 R CMD check --as-cran loadWxObs_0.0.1.tar.gz
 ```
+## License
 
+**loadWxObs** is a R package containing a set of utility functions for loading and writing weather station observations. **loadWxObs** is licensed under the GNU General Public License, version 3 or later.
+
+Copyright 2019 Jared Oyler, Kelsey Ruckert, Robert Nicholas, and Matthew Lisk
+
+**loadWxObs** is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+**loadWxObs** is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the [GNU General Public License](http://www.gnu.org/licenses/) for more details. In addition, the authors and maintainer maintain no responsibility for any errors or bugs in the code. 
+
+You should have received a copy of the GNU General Public License
+    along with **loadWxObs**.  If not, see [https://www.gnu.org/licenses/](https://www.gnu.org/licenses/).
+
+<p align="center"><i>This work was partially supported by the National Science Foundation through the Network for Sustainable Climate Risk Management (SCRiM) under NSF cooperative agreement GEO-1240507.</i></p>
