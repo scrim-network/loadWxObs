@@ -1,2 +1,9 @@
+README.md
+cran-comments.md
+cwx.def
+.DS_Store
+.git
+.gitignore
+LICENSE
 ^.*\.Rproj$
 ^\.Rproj\.user$

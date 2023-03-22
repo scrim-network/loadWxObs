@@ -78,4 +78,45 @@ stns <- stnobs[['stns']]
 obs <- stnobs[['prcp']]
 
 ```
+## Checking the package
+### Singularity
+To facilitate building and checking the package, the environment rwas built as a "writable" Singularity container. The built container is stored on Firkin (where it was built). Only the Singularity definition file is provided (`cwx.def`). This definition file can be used to reproduce the container on another system. 
+
+#### Building the container
+##### --fakeroot option
+A “fake root” user has almost the same administrative rights as root but only inside the container and the requested namespaces, which means that this user:
+
+* can set different user/group ownership for files or directories they own
+* can change user/group identity with su/sudo commands
+* has full privileges inside the requested namespaces (network, ipc, uts)
+
+##### --sandbox option
+To create a container within a writable directory (called a sandbox), it is done with the `--sandbox` option. It’s possible to create a sandbox without root privileges, but to ensure proper file permissions it is recommended to do so as root. We do so using the `--fakeroot` option. 
+
+```
+singularity build --fakeroot --sandbox cwx/ cwx.def
+``` 
+#### Running the container
+##### --writable option
+To make changes within the container, use the `--writable` flag when invoking the container. This will need to be done in an interactive mode. Once in the container you have update or install packages. 
+
+NOTE: You cannot make fundamental changes to a writeable container. This option is instead great for updating and installing R and python packages interactively as well as downloading git repos.
+
+```
+singularity shell --writable cwx/
+``` 
+
+### Running CRAN Checks
+#### Step 1: Clone the repo within the container
+```
+git clone https://github.com/klr324/obsdbr.git
+```
+#### Step 2: Build the package
+```
+ R CMD build obsdbr
+```
+#### Step 3: Run the checks
+```
+R CMD check --as-cran obsdbr_0.0.0.9.tar.gz
+```
 

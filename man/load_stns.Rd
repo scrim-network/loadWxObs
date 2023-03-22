@@ -26,3 +26,28 @@ A SpatialPointsDataFrame
 \description{
 Load station metadata as a SpatialPointsDataFrame
 }
+\seealso{
+  \code{\link{load_obs}}, \code{\link{load_time}}
+}
+\examples{
+\dontrun{
+# Set timezone for environment to UTC
+Sys.setenv(TZ="UTC")
+
+# Set file path for ChesWx netCDF observation file
+PATH_CHESWX = "/Users/jaredwo/Downloads/data/cheswx"
+path_obsnc <- file.path(PATH_CHESWX, "station_data/prcp_homog_19480101_20171231.nc")
+
+# Open observation netCDF file
+ds <- H5File$new(path_obsnc, mode='r')
+
+# Load station metadata as a SpatialPointsDataFrame
+stns <- load_stns(ds)
+
+# Plot the station points
+plot(stns)
+
+# Close netcdf file
+ds$close_all()
+}
+}
