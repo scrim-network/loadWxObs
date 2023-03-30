@@ -6,6 +6,8 @@ export(coerce_tidy_df_to_spacewide_xts)
 export(init_obsnc)
 export(load_obs)
 export(load_stns)
+export(load_stnmeta)
+export(load_tidy_obs)
 export(load_time)
 export(quick_load_stnobs)
 

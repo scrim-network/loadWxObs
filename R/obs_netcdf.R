@@ -163,6 +163,42 @@ load_obs <- function(ds, vname, stns, times, start_end = NULL, stnids = NULL) {
 
 }
 
+#' Load station observation time series from a csv file
+#'
+#' @param fpath_csv String pointing to a csv observation file
+#' @param ... Additional parameters that are passed to read.csv (e.g. skip)
+#' @return Observation time series as an xts object
+#' @export
+load_tidy_obs <- function(fpath_csv, ...) {
+  
+  obs <- read.csv(fpath_csv, stringsAsFactors= FALSE, ...)
+  obs <- dcast(obs, time~station_id)
+  row.names(obs) <- obs$time
+  obs <- as.xts(obs[,colnames(obs) != 'time'])   
+  index(obs) <- as.yearmon(index(obs))
+  
+  return(obs)
+  
+}
+
+#' Load station observation metadata from a csv file
+#'
+#' @param fpath_csv String pointing to a csv observation file
+#' @param crs_string Coordinate reference system. Default: "+proj=longlat +datum=WGS84"
+#' @param ... Additional parameters that are passed to read.csv (e.g. skip)
+#' @return Station metadata as SpatialPointsDataFrame
+#' @export 
+load_stnmeta <- function(fpath_csv, crs_string, ...) {
+  
+  stns <- read.csv(fpath_csv, stringsAsFactors= FALSE, ...)
+  # Change to SpatialPointsDataFrame
+  coordinates(stns) <- ~longitude+latitude
+  proj4string(stns) <- CRS(crs_string)
+  
+  return(stns)
+  
+}
+
 #' Build a boolean mask for stations that have long enough period-of-record
 #'
 #' @param ds H5File object pointing to netCDF observation file
