@@ -1,6 +1,12 @@
-# loadWxObs v---
+# loadWxObs v0.0.2 (Release date: 2023-11-30)
 ==============
 * stringr removed from the list of R dependencies. No commands from stringr are used in the code.
+* load_tidy_obs() function added
+* load_stnmeta() function added
+
+* Housekeeping changes: 
+	* added version 0.0.2 listing to NEWS
+	* updated cran-comments file for new version
 
 # loadWxObs v0.0.1 (Release date: 2023-03-22)
 ==============

@@ -26,9 +26,6 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     # install dependencies that we know we'll need for building R packages. texinfo for LaTex
     apt-get -y install mpi-default-dev libproj-dev libnetcdf-dev libgdal-dev libudunits2-dev libprotobuf-dev libv8-dev libjq-dev protobuf-compiler libfontconfig1-dev libharfbuzz-dev libfribidi-dev texlive-fonts-extra texinfo
 
-    # install dependencies that we know we'll need for building python packages
-    apt-get -y install python3-pip libcurl4-gnutls-dev libgnutls28-dev
-
     # get locales working properly when running on Roar
     apt-get install -y locales
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
@@ -39,11 +36,5 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     apt-get -y autoremove
     apt-get -y clean
 
-    # install a specific older version of an R package (randomForest) from source along
-    # with its contemporary dependency package
-    # Dependency packages: stats
-    # R version = 3.6.3 in current container this package is compatible with R >= 3.2.2
-    Rscript -e 'install.packages( "https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.6-14.tar.gz", repos=NULL, type="source" )'
-
     # install most recent version of some R packages
-    Rscript -e 'install.packages(c("devtools", "caret", "doParallel", "foreach", "geosphere", "gstat", "hdf5r", "MASS", "methods", "mgcv", "ncdf4", "pROC", "quantregForest", "raster", "rgdal", "Rmpi", "RNetCDF", "sp", "verification", "xts", "zoo", "reshape2", "spacetime"), repos="http://cran.us.r-project.org" )'
+    Rscript -e 'install.packages(c("devtools", "hdf5r", "ncdf4", "reshape2", "RNetCDF", "sp", "spacetime", "xts", "zoo"), repos="http://cran.us.r-project.org" )'
